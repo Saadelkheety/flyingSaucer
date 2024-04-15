@@ -36,4 +36,13 @@ function draw()
     flying_saucer_x += random(-2,2);
     flying_saucer_y += random(-2,2);
     
+    // add lights to the flying saucer
+    fill(255);
+    var incr = flying_saucer_width/9;
+    for(var i = 0; i < 10; i++)
+    {
+        ellipse(
+            flying_saucer_x - flying_saucer_width/2 + i * incr,
+            flying_saucer_y, 5, 5);
+    }
 }
