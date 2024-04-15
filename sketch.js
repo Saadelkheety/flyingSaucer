@@ -2,18 +2,29 @@
 //Object orientation revisted
 //part one
 
-var flying_saucer_x;
-var flying_saucer_y;
-var flying_saucer_width;
+var flying_saucer;
 
 function setup()
 {
     createCanvas(800,600);
     noStroke();
 
-    flying_saucer_x = 400;
-    flying_saucer_y = 150;
-    flying_saucer_width = 200;
+    flying_saucer = {
+        x: 400,
+        y: 200  ,
+        width: 200,
+        height: 50,
+        window_width: 0.5,
+        window_height: 2,
+        base_height: .5,
+        lights_num: 16,
+        brightness: []
+    };
+
+    for(var i = 0; i < flying_saucer.lights_num; i++)
+    {
+        flying_saucer.brightness.push((255/flying_saucer.lights_num) * i);
+    }
 }
 
 function draw()
@@ -26,23 +37,43 @@ function draw()
     
     //draw the flying saucer
     fill(175,238,238);
-    arc(flying_saucer_x,flying_saucer_y,flying_saucer_width/2,100,PI,TWO_PI)
+    arc(
+        flying_saucer.x,
+        flying_saucer.y,
+        flying_saucer.width*flying_saucer.window_width,
+        flying_saucer.height*flying_saucer.window_height,
+        PI,
+        TWO_PI)
     fill(150);
-    arc(flying_saucer_x,flying_saucer_y,flying_saucer_width,50,PI,TWO_PI);
+    arc(
+        flying_saucer.x,
+        flying_saucer.y,
+        flying_saucer.width,
+        flying_saucer.height,
+        PI,
+        TWO_PI);
     fill(50);
-    arc(flying_saucer_x,flying_saucer_y,flying_saucer_width,25,0,PI);
+    arc(
+        flying_saucer.x,
+        flying_saucer.y,
+        flying_saucer.width,
+        flying_saucer.height*flying_saucer.base_height,
+        0,
+        PI);
 
     //hovver the flying saucer
-    flying_saucer_x += random(-2,2);
-    flying_saucer_y += random(-2,2);
+    flying_saucer.x += random(-2,2);
+    flying_saucer.y += random(-2,2);
     
     // add lights to the flying saucer
     fill(255);
-    var incr = flying_saucer_width/9;
-    for(var i = 0; i < 10; i++)
+    var incr = flying_saucer.width/(flying_saucer.lights_num-1);
+    for(var i = 0; i < flying_saucer.lights_num; i++)
     {
+        fill(flying_saucer.brightness[i]);
         ellipse(
-            flying_saucer_x - flying_saucer_width/2 + i * incr,
-            flying_saucer_y, 5, 5);
+            flying_saucer.x - flying_saucer.width/2 + i * incr,
+            flying_saucer.y, 5, 5);
+            flying_saucer.brightness[i] = (flying_saucer.brightness[i] + 1) % 255;
     }
 }
