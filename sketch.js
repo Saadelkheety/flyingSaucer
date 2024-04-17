@@ -18,7 +18,28 @@ function setup()
         window_height: 2,
         base_height: .5,
         lights_num: 16,
-        brightness: []
+        brightness: [],
+        beam_on: true,
+
+        hover: function()
+        {
+            this.x += random(-2,2);
+            this.y += random(-2,2);
+        },
+
+        beem: function()
+        {
+            if(random() > 0.2)
+            {
+                fill(255,255,0, 100);
+                beginShape();
+                vertex(this.x - this.width/4, this.y);
+                vertex(this.x + this.width/4, this.y);
+                vertex(this.x + this.width/2, height-100);
+                vertex(this.x - this.width/2, height-100);
+                endShape(CLOSE);
+            }
+        }
     };
 
     for(var i = 0; i < flying_saucer.lights_num; i++)
@@ -35,6 +56,10 @@ function draw()
     fill(0,50,0);
     rect(0,height - 100, width, 100);
     
+    if(flying_saucer.beam_on)
+    {
+    flying_saucer.beem();
+    }
     //draw the flying saucer
     fill(175,238,238);
     arc(
@@ -61,9 +86,8 @@ function draw()
         0,
         PI);
 
-    //hovver the flying saucer
-    flying_saucer.x += random(-2,2);
-    flying_saucer.y += random(-2,2);
+    //hover the flying saucer
+    flying_saucer.hover();
     
     // add lights to the flying saucer
     fill(255);
@@ -75,5 +99,20 @@ function draw()
             flying_saucer.x - flying_saucer.width/2 + i * incr,
             flying_saucer.y, 5, 5);
             flying_saucer.brightness[i] = (flying_saucer.brightness[i] + 1) % 255;
+    }
+    
+}
+
+
+function mousePressed()
+{
+    flying_saucer.beam_on = !flying_saucer.beam_on;
+}
+
+function keyPressed()
+{
+    if(key == ' ')
+    {
+        flying_saucer.beam_on = !flying_saucer.beam_on;
     }
 }
